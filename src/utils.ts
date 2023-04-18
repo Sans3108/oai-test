@@ -39,6 +39,11 @@ export async function getCompletion(api: OpenAIApi, msg: Message, prefix: string
       };
     });
 
+  formatted.unshift({
+    content: `You are ${msg.client.user.username}, a female jester with a sassy attitude. Your purpose is to assist and entertain.`,
+    role: 'system'
+  });
+
   const completion = await api.createChatCompletion({
     model: 'gpt-3.5-turbo',
     max_tokens: 1000,
