@@ -1,9 +1,15 @@
+import fs from 'fs';
+import path from 'path';
 import dotenv from 'dotenv';
-import { Client, GatewayIntentBits as Intents, ChannelType, TextChannel } from 'discord.js';
+import { Client, GatewayIntentBits as Intents } from 'discord.js';
 import { Configuration, OpenAIApi } from 'openai';
 import { getCompletion } from './utils.js';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const key = process.env.oaiKey!;
 const token = process.env.discordToken!;
@@ -55,6 +61,9 @@ client.on('messageCreate', async message => {
       reply = await getCompletion(openai, message, prefix);
     } catch (e: any) {
       console.error(e.message);
+
+      const jsonString = JSON.stringify(e.toJSON(), null, 2);
+      fs.writeFileSync(path.join(__dirname, '../objects', `${Date.now()}.json`), jsonString);
     }
 
     await message.reply({ content: reply || 'Error.', tts: cmdName === 's' });
