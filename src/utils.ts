@@ -25,10 +25,17 @@ export async function getCompletion(api: OpenAIApi, msg: Message, prefix: string
 
       const msgContent = m.content.slice(prefix.length).slice(cmdName.length);
 
+      let username = m.author.username;
+      const usernameRegex = /^[a-zA-Z0-9_-]{1,64}$/;
+
+      if (!usernameRegex.test(username)) {
+        username = `user-${m.author.id}`;
+      }
+
       return {
         content: msgContent.trim(),
         role: 'user',
-        name: m.author.username
+        name: username
       };
     });
 

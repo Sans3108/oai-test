@@ -6,7 +6,9 @@
   "scripts": {
     "watch": "tsc -w",
     "build": "tsc",
-    "start": "node ."
+    "start": "node .",
+    "cleanup": "rm -rf dist || rmdir /s /q dist",
+    "rebuild": "npm run cleanup && npm run build"
   },
   "keywords": [],
   "author": "",
