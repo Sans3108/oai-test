@@ -46,8 +46,7 @@ export async function getCompletion(api: OpenAIApi, msg: Message, prefix: string
 
   const completion = await api.createChatCompletion({
     model: 'gpt-3.5-turbo',
-    max_tokens: 1000,
-    stop: ['\n', 'Human:', 'AI:'],
+    max_tokens: 2000,
     messages: formatted
   });
 
